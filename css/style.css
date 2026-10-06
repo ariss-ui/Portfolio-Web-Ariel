@@ -1,0 +1,114 @@
+:root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --bg1:#0a0a3a; --bg2:#1b2bd6; --glow:#7a2cff; --text:#fff; --muted:rgba(255,255,255,.65);
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg1); color:var(--text);
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+    overflow:hidden;
+  }
+  
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; height:100%; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:28px; padding:0 16px;
+    background:
+      radial-gradient(60% 50% at 15% 85%, var(--bg2) 0%, transparent 70%),
+      radial-gradient(50% 45% at 85% 15%, rgba(122,44,255,.55) 0%, transparent 70%),
+      linear-gradient(160deg,#0d1090 0%,#070735 55%,#03031a 100%);
+  }
+  
+  /* ---------- CÍRCULO / BARRA ---------- */
+  .orb{
+    position:relative; width:170px; height:170px; border-radius:999px;
+    background:radial-gradient(circle at 30% 25%, #14146e, #05052a 70%);
+    border:1px solid rgba(140,150,255,.35);
+    box-shadow:0 0 60px rgba(60,70,255,.35), inset -8px -8px 30px rgba(255,80,180,.18);
+    cursor:pointer;
+    transition:width 1s cubic-bezier(.7,0,.2,1), height 1s cubic-bezier(.7,0,.2,1),
+               border-color .8s, box-shadow .8s;
+    display:flex; align-items:center; padding:0 28px;
+    max-width:100%;
+  }
+  .open .orb{
+    width:min(720px,100%); height:72px; cursor:default;
+    border-color:rgba(255,70,140,.7);
+    box-shadow:0 0 40px rgba(255,60,140,.25), 0 0 80px rgba(60,70,255,.3);
+  }
+  
+  /* ---------- TEXTO ESCRITO ---------- */
+  .query{
+    font-size:clamp(15px,2.4vw,22px); white-space:nowrap; overflow:hidden;
+    opacity:0; transition:opacity .5s .7s; padding-right:70px;
+  }
+  .open .query{opacity:1}
+  .caret{
+    display:inline-block; width:2px; height:1.1em; background:#fff;
+    margin-left:2px; vertical-align:-3px; animation:blink 1s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0}}
+  
+  /* ---------- ICONO: PUNTO -> LUPA ---------- */
+  .icon{
+    position:absolute; top:50%; left:50%; width:30px; height:30px;
+    transform:translate(-50%,-50%);
+    transition:left 1s cubic-bezier(.7,0,.2,1);
+  }
+  .open .icon{left:calc(100% - 46px); cursor:pointer}
+  .dot{
+    position:absolute; inset:0;
+    transform:translate(var(--dx,0px),var(--dy,0px));
+    transition:transform .15s ease-out;
+  }
+  .open .dot{transform:none}
+  .lens{
+    position:absolute; left:50%; top:50%; width:10px; height:10px;
+    border-radius:50%; background:#fff; border:2.5px solid #fff;
+    transform:translate(-50%,-50%) translate(-14px,-12px);
+    transition:width .8s .5s, height .8s .5s, background .6s .6s, transform 1s;
+    box-shadow:0 0 12px rgba(255,255,255,.6);
+  }
+  .open .lens{
+    width:22px; height:22px; background:transparent;
+    transform:translate(-50%,-50%) translate(-3px,-3px);
+  }
+  .handle{
+    position:absolute; left:50%; top:50%; width:11px; height:3px;
+    border-radius:2px; background:#fff;
+    transform-origin:left center;
+    transform:translate(6px,6px) rotate(45deg) scaleX(0);
+    transition:transform .5s 1s;
+  }
+  .open .handle{transform:translate(6px,6px) rotate(45deg) scaleX(1)}
+  .icon:hover .lens{box-shadow:0 0 18px #fff}
+  
+  /* ---------- NAVEGACIÓN ---------- */
+  .nav{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+  .nav a{
+    color:var(--text); text-decoration:none; font-size:15px; padding:10px 20px;
+    border-radius:999px; border:1px solid rgba(255,255,255,.2);
+    background:rgba(255,255,255,.06); backdrop-filter:blur(6px);
+    opacity:0; transform:translateY(12px);
+    transition:opacity .5s, transform .5s, background .2s, border-color .2s;
+  }
+  .nav a:hover{background:rgba(255,70,140,.25); border-color:rgba(255,70,140,.7)}
+  .nav.show a{opacity:1; transform:none}
+  .nav.show a:nth-child(2){transition-delay:.1s,.1s,0s,0s}
+  .nav.show a:nth-child(3){transition-delay:.2s,.2s,0s,0s}
+  .nav.show a:nth-child(4){transition-delay:.3s,.3s,0s,0s}
+  
+  /* ---------- PISTA INFERIOR ---------- */
+  .hint{
+    position:absolute; bottom:24px; font-size:13px; color:var(--muted);
+    transition:opacity .5s;
+  }
+  .open .hint{opacity:0}
+  
+  /* Accesibilidad: sin animaciones si el usuario lo prefiere */
+  @media (prefers-reduced-motion:reduce){
+    *{transition-duration:.01s!important; transition-delay:0s!important; animation:none!important}
+  }
