@@ -88,6 +88,14 @@ let mouseX = innerWidth / 2, mouseY = innerHeight / 2;
 let hasMouse = false;
 let ox = 0, oy = 0, nx = 0, ny = 0;   // posiciones actuales (suavizadas)
 
+// Escala según el tamaño de pantalla (para 4K / TVs)
+let scale = 1;
+function updateScale(){
+  scale = parseFloat(getComputedStyle(document.documentElement).fontSize) / 16;
+}
+updateScale();
+addEventListener('resize', updateScale);
+
 addEventListener('pointermove', e => {
   if (e.pointerType !== 'mouse') return;   // solo con mouse
   hasMouse = true;
@@ -109,7 +117,7 @@ function lookDot(x, y){
   const cx = r.left + r.width / 2;
   const cy = r.top + r.height / 2;
   const a  = Math.atan2(y - cy, x - cx);
-  const d  = Math.min(Math.hypot(x - cx, y - cy) / 8, 18);
+  const d  = Math.min(Math.hypot(x - cx, y - cy) / 8, 18 * scale);
   dot.style.setProperty('--dx', Math.cos(a) * d + 'px');
   dot.style.setProperty('--dy', Math.sin(a) * d + 'px');
 }
@@ -117,7 +125,7 @@ function lookDot(x, y){
 function loop(){
   if (hasMouse && !reduceMotion){
     const f = isOpen ? FOLLOW_OPEN : FOLLOW_CLOSED;
-    const m = isOpen ? MAX_OPEN : MAX_CLOSED;
+    const m = (isOpen ? MAX_OPEN : MAX_CLOSED) * scale;
     const tx = clamp((mouseX - innerWidth  / 2) * f, m);
     const ty = clamp((mouseY - innerHeight / 2) * f, m);
 

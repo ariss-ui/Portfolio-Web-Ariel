@@ -5,17 +5,25 @@
     --bg1:#0a0a3a; --bg2:#1b2bd6; --glow:#7a2cff; --text:#fff; --muted:rgba(255,255,255,.65);
   }
   *{box-sizing:border-box;margin:0}
-  html,body{height:100%}
+  
+  /* Tamaño base: todo lo demás (rem) escala a partir de aquí */
+  html{font-size:16px; height:100%}
+  @media (min-width:2200px){html{font-size:20px}}   /* monitores grandes / 2K */
+  @media (min-width:2800px){html{font-size:24px}}   /* 4K con escala */
+  @media (min-width:3600px){html{font-size:32px}}   /* 4K a 100% / TVs */
+  
   body{
+    min-height:100%;
     background:var(--bg1); color:var(--text);
     font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
-    overflow:hidden;
+    overflow-x:hidden;
   }
   
   /* ---------- HERO ---------- */
   .hero{
-    position:relative; height:100%; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:28px; padding:0 16px;
+    position:relative; min-height:100vh; min-height:100svh;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:1.75rem; padding:2rem 1rem;
     background:
       radial-gradient(60% 50% at 15% 85%, var(--bg2) 0%, transparent 70%),
       radial-gradient(50% 45% at 85% 15%, rgba(122,44,255,.55) 0%, transparent 70%),
@@ -24,30 +32,32 @@
   
   /* ---------- CÍRCULO / BARRA ---------- */
   .orb{
-    position:relative; width: 100px; height: 100px; border-radius:999px;
+    position:relative; width:6.875rem; height:6.875rem; border-radius:999px;
     background:radial-gradient(circle at 30% 25%, #14146e, #05052a 70%);
     border:1px solid rgba(140,150,255,.35);
     box-shadow:0 0 60px rgba(60,70,255,.35), inset -8px -8px 30px rgba(255,80,180,.18);
     cursor:pointer;
     transition:width 1s cubic-bezier(.7,0,.2,1), height 1s cubic-bezier(.7,0,.2,1),
                border-color .8s, box-shadow .8s;
-    display:flex; align-items:center; padding:0 22px;
+    display:flex; align-items:center; padding:0 1.375rem;
     max-width:100%;
     transform:translate(var(--ox,0px),var(--oy,0px));
     will-change:transform;
   }
   .open .orb{
-    width:min(720px,100%); height:72px; cursor:default;
+    width:min(45rem,100%); height:4.5rem; cursor:default;
     border-color:rgba(255,70,140,.7);
     box-shadow:0 0 40px rgba(255,60,140,.25), 0 0 80px rgba(60,70,255,.3);
   }
-
-  .orb:hover{box-shadow:0 0 80px rgba(80,90,255,.5), inset -8px -8px 30px rgba(255,80,180,.18)}.open .orb:hover{box-shadow:0 0 40px rgba(255,60,140,.25), 0 0 80px rgba(60,70,255,.3)}
+  @media (hover:hover){
+    .orb:hover{box-shadow:0 0 80px rgba(80,90,255,.5), inset -8px -8px 30px rgba(255,80,180,.18)}
+    .open .orb:hover{box-shadow:0 0 40px rgba(255,60,140,.25), 0 0 80px rgba(60,70,255,.3)}
+  }
   
   /* ---------- TEXTO (entra y sale suave, letra por letra) ---------- */
-.query{
-    font-size:clamp(15px,2.4vw,22px); white-space:pre; overflow:hidden;
-    padding-right:70px;
+  .query{
+    font-size:clamp(.95rem,2.4vw,1.4rem); white-space:pre; overflow:hidden;
+    padding-right:4.4rem;
   }
   .char{
     display:inline-block; opacity:0;
@@ -71,11 +81,11 @@
   
   /* ---------- ICONO: PUNTO -> LUPA ---------- */
   .icon{
-    position:absolute; top:50%; left:50%; width:30px; height:30px;
+    position:absolute; top:50%; left:50%; width:1.875rem; height:1.875rem;
     transform:translate(-50%,-50%);
     transition:left 1s cubic-bezier(.7,0,.2,1);
   }
-  .open .icon{left:calc(100% - 46px); cursor:pointer}
+  .open .icon{left:calc(100% - 2.875rem); cursor:pointer}
   .dot{
     position:absolute; inset:0;
     transform:translate(var(--dx,0px),var(--dy,0px));
@@ -83,51 +93,78 @@
   }
   .open .dot{transform:none}
   .lens{
-    position:absolute; left:50%; top:50%; width:10px; height:10px;
-    border-radius:50%; background:#fff; border:2.5px solid #fff;
-    transform:translate(-50%,-50%) translate(-14px,-12px);
+    position:absolute; left:50%; top:50%; width:.625rem; height:.625rem;
+    border-radius:50%; background:#fff; border:.16rem solid #fff;
+    transform:translate(-50%,-50%) translate(-.875rem,-.75rem);
     transition:width .8s .5s, height .8s .5s, background .6s .6s, transform 1s;
     box-shadow:0 0 12px rgba(255,255,255,.6);
   }
   .open .lens{
-    width:22px; height:22px; background:transparent;
-    transform:translate(-50%,-50%) translate(-3px,-3px);
+    width:1.375rem; height:1.375rem; background:transparent;
+    transform:translate(-50%,-50%) translate(-.19rem,-.19rem);
   }
   .handle{
-    position:absolute; left:50%; top:50%; width:11px; height:3px;
+    position:absolute; left:50%; top:50%; width:.6875rem; height:.1875rem;
     border-radius:2px; background:#fff;
     transform-origin:left center;
-    transform:translate(6px,6px) rotate(45deg) scaleX(0);
+    transform:translate(.375rem,.375rem) rotate(45deg) scaleX(0);
     transition:transform .5s 1s;
   }
-  .open .handle{transform:translate(6px,6px) rotate(45deg) scaleX(1)}
-  .icon:hover .lens{box-shadow:0 0 18px #fff}
+  .open .handle{transform:translate(.375rem,.375rem) rotate(45deg) scaleX(1)}
+  @media (hover:hover){
+    .icon:hover .lens{box-shadow:0 0 18px #fff}
+  }
   
   /* ---------- NAVEGACIÓN ---------- */
-  .nav{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
-  .nav a{
-    color:var(--text); text-decoration:none; font-size:15px; padding:10px 20px;
-    border-radius:999px; border:1px solid rgba(255,255,255,.2);
-    background:rgba(255,255,255,.06); backdrop-filter:blur(6px);
-    opacity:0; transform:translateY(12px);
-    visibility:hidden; pointer-events:none;
-    transition:opacity .5s, transform .5s, background .2s, border-color .2s, visibility .5s;
-
-
+  .nav{
+    display:flex; gap:.625rem; flex-wrap:wrap; justify-content:center;
     transform:translate(var(--nx,0px),var(--ny,0px));
     will-change:transform;
-}
-  .nav a:hover{background:rgba(255,70,140,.25); border-color:rgba(255,70,140,.7)}
+  }
+  .nav a{
+    color:var(--text); text-decoration:none; font-size:.95rem; padding:.65rem 1.25rem;
+    border-radius:999px; border:1px solid rgba(255,255,255,.2);
+    background:rgba(255,255,255,.06); backdrop-filter:blur(6px);
+    opacity:0; transform:translateY(.75rem);
+    visibility:hidden; pointer-events:none;
+    transition:opacity .5s, transform .5s, background .2s, border-color .2s, visibility .5s;
+  }
+  @media (hover:hover){
+    .nav a:hover{background:rgba(255,70,140,.25); border-color:rgba(255,70,140,.7)}
+  }
   .nav.show a{opacity:1; transform:none; visibility:visible; pointer-events:auto}
+  .nav.show a:nth-child(2){transition-delay:.1s,.1s,0s,0s,.1s}
+  .nav.show a:nth-child(3){transition-delay:.2s,.2s,0s,0s,.2s}
+  .nav.show a:nth-child(4){transition-delay:.3s,.3s,0s,0s,.3s}
   
   /* ---------- PISTA INFERIOR ---------- */
   .hint{
-    position:absolute; bottom:24px; font-size:13px; color:var(--muted);
+    position:absolute; bottom:1.5rem; font-size:.8rem; color:var(--muted);
     transition:opacity .5s;
   }
   .open .hint{opacity:0}
   
+  /* ---------- RESPONSIVO ---------- */
+  /* Pantallas táctiles: botones fáciles de tocar */
+  @media (pointer:coarse){
+    .nav a{min-height:2.75rem; display:inline-flex; align-items:center}
+  }
+  /* Móvil */
+  @media (max-width:600px){
+    .hero{gap:1.25rem}
+    .open .orb{height:4rem}
+    .orb{padding:0 1.1rem}
+    .query{padding-right:3.4rem}
+    .open .icon{left:calc(100% - 2.5rem)}
+    .nav a{font-size:.9rem; padding:.6rem 1rem}
+  }
+  /* Tablet */
+  @media (min-width:601px) and (max-width:1024px){
+    .open .orb{width:min(38rem,100%)}
+  }
+  
   /* Accesibilidad: sin animaciones si el usuario lo prefiere */
   @media (prefers-reduced-motion:reduce){
     *{transition-duration:.01s!important; transition-delay:0s!important; animation:none!important}
+    .char{opacity:1; filter:none; transform:none}
   }
